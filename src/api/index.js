@@ -4,5 +4,10 @@ export default {
     let data = await fetch(`${BASE_URL}/random`)
     data = await data.json()
     return data[0]
+  },
+  getAllBeers: async () => {
+    let data = await fetch(`${BASE_URL}`)
+    data = await data.json()
+    return data
   }
 }
