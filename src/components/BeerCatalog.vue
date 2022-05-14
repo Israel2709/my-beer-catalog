@@ -57,7 +57,7 @@
         <h2 class="text-h2 text-center">Whole Beers List</h2>
       </v-col>
       <v-col cols="6" v-for="beer in allBeers" :key="beer.id">
-        <v-card class="pa-8">
+        <v-card class="pa-8 h-100 d-flex">
           <v-row>
             <v-col cols="3">
               <v-img
@@ -79,7 +79,7 @@
               ></v-card-subtitle>
               <v-card-text v-text="beer.description"></v-card-text>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" class="d-flex flex-column">
               <v-card-text>
                 <p class="text-h6">Pair with:</p>
                 <div>
@@ -94,7 +94,7 @@
                 </div>
                 <span></span>
               </v-card-text>
-              <v-card-text>
+              <v-card-text class="mt-auto">
                 <p class="text-h6">Brewers Tips:</p>
                 <p>{{ beer.brewers_tips }}</p>
                 <span></span>
