@@ -36,3 +36,17 @@
     ]
 }
 ```
+
+## Notas
+
+El proceso para llegar a la solución consistió en analizar los requerimientos, así como las tecnologías sugeridas para la prueba. El proceso requirió de investigación previa respecto al uso de las herramientas solicitadas. Posteriormente realicé bosquejos sencillos de lo que quería mostrar.
+
+El proceso de desarrollo implicó aplicar los conocimientos con que cuento sobre el lenguaje JS, resolviendo los siguientes pasos:
+
+- Crear un template genérico que permitiera conectar la UI con la API sugerida
+- Crear un componente de prueba para poder implementar el framework de diseño sugerido ( Beer of the day )
+- Crear un componente que permitiera visualizar todos los elementos disponibles en la base de datos ( Beer Catalog )
+- Implementar la paginación para el seccionado de datos
+- Agregar responsividad al desarrollo
+
+La implementación de las tecnologías se llevó a cabo siguiendo en medida de lo posible las recomendaciones de mejores prácticas encontradas en la documentación y en fuentes externas.
