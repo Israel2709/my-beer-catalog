@@ -18,6 +18,10 @@ export default new Vuex.Store({
     async fetchAllBeers (context) {
       const allBeers = await api.getAllBeers()
       context.commit('setAllBeers', allBeers)
+    },
+    async fetchBeersPage (context) {
+      const beersPage = await api.getPaginatedBeers(1)
+      context.commit('setPaginatedBeers', beersPage)
     }
   },
   mutations: {
@@ -27,6 +31,10 @@ export default new Vuex.Store({
     },
     setAllBeers (state, allBeers) {
       state.allBeers = allBeers
+    },
+    setPaginatedBeers (state, beersPage) {
+      console.log(beersPage)
+      state.beersPage = beersPage
     }
   }
 })

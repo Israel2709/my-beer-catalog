@@ -38,7 +38,7 @@
                 <p class="text-h6">Pair with:</p>
                 <div>
                   <v-chip
-                    class="mr-2"
+                    class="mr-2 mb-2"
                     color="primary"
                     v-for="food in randomBeer.food_pairing"
                     :key="food"
@@ -56,7 +56,7 @@
       <v-col cols="12">
         <h2 class="text-h2 text-center">Whole Beers List</h2>
       </v-col>
-      <v-col cols="6" v-for="beer in allBeers" :key="beer.id">
+      <v-col cols="6" v-for="beer in beersPage" :key="beer.id">
         <v-card class="pa-8 h-100 d-flex">
           <v-row>
             <v-col cols="3">
@@ -92,12 +92,10 @@
                     {{ food }}
                   </v-chip>
                 </div>
-                <span></span>
               </v-card-text>
               <v-card-text class="mt-auto">
                 <p class="text-h6">Brewers Tips:</p>
                 <p>{{ beer.brewers_tips }}</p>
-                <span></span>
               </v-card-text>
             </v-col>
           </v-row>
@@ -108,18 +106,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'BeerCatalog',
-  computed: {
-    randomBeer () {
-      return this.$store.state.randomBeer
-    },
-    allBeers () {
-      return this.$store.state.allBeers
-    }
-  },
+
+  computed: mapState({
+    randomBeer: state => state.randomBeer,
+    allBeers: state => state.allBeers,
+    beersPage: state => state.beersPage
+  }),
   mounted () {
     this.$store.dispatch('fetchRandomBeer')
+    this.$store.dispatch('fetchBeersPage')
     this.$store.dispatch('fetchAllBeers')
   }
 }

@@ -9,5 +9,10 @@ export default {
     let data = await fetch(`${BASE_URL}`)
     data = await data.json()
     return data
+  },
+  getPaginatedBeers: async page => {
+    let data = await fetch(`${BASE_URL}?page=${page}&per_page=2`)
+    data = await data.json()
+    return data
   }
 }
