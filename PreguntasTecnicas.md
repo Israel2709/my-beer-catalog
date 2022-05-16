@@ -50,3 +50,5 @@ El proceso de desarrollo implicó aplicar los conocimientos con que cuento sobre
 - Agregar responsividad al desarrollo
 
 La implementación de las tecnologías se llevó a cabo siguiendo en medida de lo posible las recomendaciones de mejores prácticas encontradas en la documentación y en fuentes externas.
+
+Muchas gracias por la oportunidad brindada con esta prueba técnica, el llevarla a cabo me ha permitido retomar conocimientos sobre VueJS, Vuex y conocer el framework Vuetify. Espero que esta prueba avale los conocimientos necesarios para poder colaborar con ustedes.
