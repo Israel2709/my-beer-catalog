@@ -10,115 +10,59 @@
         <h2 class="text-h2 text-center">The beer of the day</h2>
       </v-col>
       <v-col cols="12">
-        <v-card class="pa-8">
-          <v-row>
-            <v-col cols="3">
-              <v-img
-                transition="false"
-                contain
-                max-width="100%"
-                max-height="300"
-                :src="
-                  randomBeer.image_url ||
-                    'https://i.pinimg.com/originals/69/9b/87/699b87ec80493386f3e846753baf2c0d.png'
-                "
-              ></v-img>
-            </v-col>
-            <v-col cols="9">
-              <v-card-title
-                class="text-h3"
-                v-text="randomBeer.name"
-              ></v-card-title>
-              <v-card-subtitle
-                v-text="randomBeer.tagline"
-                class="text-h4"
-              ></v-card-subtitle>
-              <v-card-text v-text="randomBeer.description"></v-card-text>
-              <v-card-text>
-                <p class="text-h6">Pair with:</p>
-                <div>
-                  <v-chip
-                    class="mr-2 mb-2"
-                    color="primary"
-                    v-for="food in randomBeer.food_pairing"
-                    :key="food"
-                  >
-                    {{ food }}
-                  </v-chip>
-                </div>
-              </v-card-text>
-            </v-col>
-          </v-row>
-        </v-card>
+        <BeerCard :beerData="randomBeer" :withDetails="true" />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
         <h2 class="text-h2 text-center">Whole Beers List</h2>
       </v-col>
-      <v-col cols="6" v-for="beer in beersPage" :key="beer.id">
-        <v-card class="pa-8 h-100 d-flex">
-          <v-row>
-            <v-col cols="3">
-              <v-img
-                transition="false"
-                contain
-                max-width="100%"
-                max-height="250"
-                :src="
-                  beer.image_url ||
-                    'https://i.pinimg.com/originals/69/9b/87/699b87ec80493386f3e846753baf2c0d.png'
-                "
-              ></v-img>
-            </v-col>
-            <v-col cols="9">
-              <v-card-title class="text-h4" v-text="beer.name"></v-card-title>
-              <v-card-subtitle
-                v-text="beer.tagline"
-                class="text-h5"
-              ></v-card-subtitle>
-              <v-card-text v-text="beer.description"></v-card-text>
-            </v-col>
-            <v-col cols="12" class="d-flex flex-column">
-              <v-card-text>
-                <p class="text-h6">Pair with:</p>
-                <div>
-                  <v-chip
-                    class="mr-2 mb-2"
-                    color="primary"
-                    v-for="food in beer.food_pairing"
-                    :key="food"
-                  >
-                    {{ food }}
-                  </v-chip>
-                </div>
-              </v-card-text>
-              <v-card-text class="mt-auto">
-                <p class="text-h6">Brewers Tips:</p>
-                <p>{{ beer.brewers_tips }}</p>
-              </v-card-text>
-            </v-col>
-          </v-row>
-        </v-card>
+      <v-col cols="12">
+        <v-form ref="form">
+          <v-text-field
+            v-model="beerName"
+            label="Filter By Name"
+            @keyup="filterByName()"
+          ></v-text-field>
+        </v-form>
+      </v-col>
+      <v-col v-for="beer in beersPage" cols="12" md="6" :key="beer.id">
+        <BeerCard :beerData="beer" :withDetails="false" />
       </v-col>
     </v-row>
+    <BeersPagination
+      @changePage="changePage($event)"
+      :totalPages="totalPages"
+    />
   </v-container>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import BeerCard from './BeerCard.vue'
+import BeersPagination from './BeersPagination.vue'
 export default {
   name: 'BeerCatalog',
-
-  computed: mapState({
-    randomBeer: state => state.randomBeer,
-    allBeers: state => state.allBeers,
-    beersPage: state => state.beersPage
-  }),
+  data: function () {
+    return {
+      beerName: '',
+      page: 1
+    }
+  },
+  methods: {
+    changePage: function (selectedPage) {
+      this.$store.dispatch('fetchBeersPage', selectedPage)
+    },
+    filterByName: function () {
+      this.beerName && this.$store.dispatch('filterByName', this.beerName)
+    }
+  },
+  computed: mapState(['randomBeer', 'allBeers', 'beersPage', 'totalPages']),
   mounted () {
     this.$store.dispatch('fetchRandomBeer')
-    this.$store.dispatch('fetchBeersPage')
     this.$store.dispatch('fetchAllBeers')
-  }
+    this.$store.dispatch('fetchBeersPage', 1)
+  },
+  components: { BeerCard, BeersPagination }
 }
 </script>
