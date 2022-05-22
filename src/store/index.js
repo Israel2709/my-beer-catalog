@@ -10,7 +10,7 @@ export default new Vuex.Store({
     allBeers: [],
     beersPage: [],
     totalPages: 0,
-    beersPerPage: 2,
+    beersPerPage: 4,
     beerName: '',
     filteredBeers: []
   },
