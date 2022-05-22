@@ -22,7 +22,7 @@
           <v-text-field
             v-model="beerName"
             label="Filter By Name"
-            @keyup="filterByName()"
+            @input="filterByName()"
           ></v-text-field>
         </v-form>
       </v-col>
@@ -33,6 +33,7 @@
     <BeersPagination
       @changePage="changePage($event)"
       :totalPages="totalPages"
+      :value="page"
     />
   </v-container>
 </template>
@@ -45,8 +46,7 @@ export default {
   name: 'BeerCatalog',
   data: function () {
     return {
-      beerName: '',
-      page: 1
+      beerName: ''
     }
   },
   methods: {
@@ -54,14 +54,22 @@ export default {
       this.$store.dispatch('fetchBeersPage', selectedPage)
     },
     filterByName: function () {
-      this.beerName && this.$store.dispatch('filterByName', this.beerName)
+      this.$store.dispatch('filterByName', this.beerName)
     }
   },
-  computed: mapState(['randomBeer', 'allBeers', 'beersPage', 'totalPages']),
+  computed: mapState([
+    'randomBeer',
+    'allBeers',
+    'beersPage',
+    'totalPages',
+    'filteredBeers',
+    'paginatedBeers',
+    'page'
+  ]),
   mounted () {
     this.$store.dispatch('fetchRandomBeer')
     this.$store.dispatch('fetchAllBeers')
-    this.$store.dispatch('fetchBeersPage', 1)
+    this.$store.dispatch('fetchBeersPage', 0)
   },
   components: { BeerCard, BeersPagination }
 }

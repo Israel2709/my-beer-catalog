@@ -20,15 +20,24 @@
 <script>
 export default {
   name: 'BeerPagination',
-  data () {
+  data (props) {
     return {
-      page: 1
+      page: props.value
     }
   },
-  props: ['totalPages'],
+  props: ['totalPages', 'value'],
   methods: {
     changePage: function () {
       this.$emit('changePage', this.page)
+    }
+  },
+  watch: {
+    value: {
+      immediate: true,
+      handler (val, oldVal) {
+        console.log(val, oldVal)
+        this.page = val
+      }
     }
   }
 }
