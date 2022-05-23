@@ -28,7 +28,7 @@ export default {
   props: ['totalPages', 'value'],
   methods: {
     changePage: function () {
-      this.$emit('changePage', this.page)
+      this.$emit('showBeerDetails', this.page)
     }
   },
   watch: {

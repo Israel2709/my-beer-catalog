@@ -14,7 +14,8 @@ export default new Vuex.Store({
     beerName: '',
     filteredBeers: [],
     paginatedBeers: [],
-    page: 1
+    page: 1,
+    selectedBeer: {}
   },
   getters: {},
   actions: {
@@ -33,6 +34,7 @@ export default new Vuex.Store({
         accum[page].push(current)
         return accum
       }, [])
+
       context.commit('setAllBeers', allBeers)
       context.commit('setFilteredBeers', allBeers)
       context.commit('setPaginatedBeers', paginatedBeers)
@@ -40,13 +42,13 @@ export default new Vuex.Store({
       context.commit('setTotalPages', paginatedBeers.length)
       context.commit('resetSelectedPage', 1)
     },
-    async fetchBeersPage (context, page) {
+    fetchBeersPage (context, page) {
       const { paginatedBeers } = this.state
       const beersPage = paginatedBeers[page - 1]
       context.commit('setBeersPage', beersPage)
       context.commit('resetSelectedPage', page)
     },
-    async filterByName (context, beerName) {
+    filterByName (context, beerName) {
       const { allBeers, beersPerPage } = this.state
       const result = beerName
         ? allBeers.filter(beer =>
@@ -66,6 +68,11 @@ export default new Vuex.Store({
       context.commit('setBeersPage', paginatedBeers[0])
       context.commit('setTotalPages', paginatedBeers.length)
       context.commit('resetSelectedPage', 1)
+    },
+    fetchBeerById (context, id) {
+      const selectedBeer = this.state.allBeers.find(beer => beer.id === id)
+      console.log(selectedBeer)
+      context.commit('setSelectedBeer', selectedBeer)
     }
   },
   mutations: {
@@ -86,6 +93,9 @@ export default new Vuex.Store({
     },
     setBeersPage (state, beersPage) {
       state.beersPage = beersPage
+    },
+    setSelectedBeer (state, selectedBeer) {
+      state.selectedBeer = selectedBeer
     },
     resetSelectedPage (state, val) {
       state.page = val
