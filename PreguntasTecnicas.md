@@ -48,6 +48,8 @@ El proceso de desarrollo implicó aplicar los conocimientos con que cuento sobre
 - Crear un componente que permitiera visualizar todos los elementos disponibles en la base de datos ( Beer Catalog )
 - Implementar la paginación para el seccionado de datos
 - Agregar responsividad al desarrollo
+- Agregar una modal para mostrar los detalles de una cerveza seleccionada
+- Agregar retroalimentación cuando el filtro por nombre no muestra resultados
 
 La implementación de las tecnologías se llevó a cabo siguiendo en medida de lo posible las recomendaciones de mejores prácticas encontradas en la documentación y en fuentes externas.
 
