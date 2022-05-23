@@ -6,7 +6,7 @@ export default {
     return data[0]
   },
   getAllBeers: async () => {
-    let data = await fetch(`${BASE_URL}`)
+    let data = await fetch(`${BASE_URL}?per_page=80`)
     data = await data.json()
     return data
   },

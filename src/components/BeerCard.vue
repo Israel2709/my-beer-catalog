@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-4 h-100">
+  <v-card class="pa-4 h-100" @click="handleClick(beerData)">
     <v-row>
       <v-col cols="2">
         <v-img
@@ -53,6 +53,12 @@
 <script>
 export default {
   name: 'BeerCard',
-  props: ['beerData', 'withDetails']
+  props: ['beerData', 'withDetails'],
+  methods: {
+    handleClick: function (data) {
+      console.log(data)
+      this.$emit('click', data.id)
+    }
+  }
 }
 </script>

@@ -10,9 +10,12 @@ export default new Vuex.Store({
     allBeers: [],
     beersPage: [],
     totalPages: 0,
-    beersPerPage: 2,
+    beersPerPage: 4,
     beerName: '',
-    filteredBeers: []
+    filteredBeers: [],
+    paginatedBeers: [],
+    page: 1,
+    selectedBeer: {}
   },
   getters: {},
   actions: {
@@ -23,21 +26,7 @@ export default new Vuex.Store({
     async fetchAllBeers (context) {
       const allBeers = await api.getAllBeers()
       const { beersPerPage } = this.state
-      context.commit('setAllBeers', allBeers)
-      context.commit('setTotalPages', { allBeers, beersPerPage })
-    },
-    async fetchBeersPage (context, page) {
-      console.log(this.state.filteredBeers)
-      const { beersPerPage } = this.state
-      const beersPage = await api.getPaginatedBeers(page, beersPerPage)
-      context.commit('setPaginatedBeers', beersPage)
-    },
-    async filterByName (context, beerName) {
-      const { beersPerPage } = this.state
-      beerName = beerName.replace(/ /g, '_')
-      console.log(beerName)
-      const result = await api.getBeersByName(beerName)
-      const filteredBeers = result.reduce((accum, current, index) => {
+      const paginatedBeers = allBeers.reduce((accum, current, index) => {
         const page = Math.floor(index / beersPerPage)
         if (!accum[page]) {
           accum[page] = []
@@ -45,8 +34,44 @@ export default new Vuex.Store({
         accum[page].push(current)
         return accum
       }, [])
-      console.log(filteredBeers)
-      context.commit('setTotalPages', { allBeers: result, beersPerPage })
+      context.commit('setAllBeers', allBeers)
+      context.commit('setFilteredBeers', allBeers)
+      context.commit('setPaginatedBeers', paginatedBeers)
+      context.commit('setBeersPage', paginatedBeers[0])
+      context.commit('setTotalPages', paginatedBeers.length)
+      context.commit('resetSelectedPage', 1)
+    },
+    fetchBeersPage (context, page) {
+      const { paginatedBeers } = this.state
+      const beersPage = paginatedBeers[page - 1]
+      context.commit('setBeersPage', beersPage)
+      context.commit('resetSelectedPage', page)
+    },
+    filterByName (context, beerName) {
+      const { allBeers, beersPerPage } = this.state
+      const result = beerName
+        ? allBeers.filter(beer =>
+            beer.name.toLowerCase().includes(beerName.toLowerCase())
+          )
+        : allBeers
+      console.log(result)
+      const paginatedBeers = result.reduce((accum, current, index) => {
+        const page = Math.floor(index / beersPerPage)
+        if (!accum[page]) {
+          accum[page] = []
+        }
+        accum[page].push(current)
+        return accum
+      }, [])
+      context.commit('setPaginatedBeers', paginatedBeers)
+      context.commit('setBeersPage', paginatedBeers[0])
+      context.commit('setTotalPages', paginatedBeers.length)
+      context.commit('resetSelectedPage', 1)
+    },
+    fetchBeerById (context, id) {
+      const selectedBeer = this.state.allBeers.find(beer => beer.id === id)
+      console.log(selectedBeer)
+      context.commit('setSelectedBeer', selectedBeer)
     }
   },
   mutations: {
@@ -56,12 +81,23 @@ export default new Vuex.Store({
     setAllBeers (state, allBeers) {
       state.allBeers = allBeers
     },
-    setPaginatedBeers (state, beersPage) {
+    setFilteredBeers (state, filteredBeers) {
+      state.filteredBeers = filteredBeers
+    },
+    setPaginatedBeers (state, paginatedBeers) {
+      state.paginatedBeers = paginatedBeers
+    },
+    setTotalPages (state, totalPages) {
+      state.totalPages = totalPages
+    },
+    setBeersPage (state, beersPage) {
       state.beersPage = beersPage
     },
-    setTotalPages (state, { allBeers, beersPerPage }) {
-      console.log(allBeers)
-      state.totalPages = Math.ceil(allBeers.length / beersPerPage)
+    setSelectedBeer (state, selectedBeer) {
+      state.selectedBeer = selectedBeer
+    },
+    resetSelectedPage (state, val) {
+      state.page = val
     }
   }
 })
