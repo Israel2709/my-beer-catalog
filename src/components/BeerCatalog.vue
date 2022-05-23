@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-dialog v-model="dialog">
+    <v-dialog v-model="dialog" max-width="550">
       <BeerCard :beerData="selectedBeer" :withDetails="true" />
     </v-dialog>
     <v-row class="text-center">
